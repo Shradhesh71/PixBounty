@@ -20,7 +20,7 @@ function authMiddleware(req, res, next) {
     }
     catch (e) {
         return res.status(403).json({
-            message: "YOu are not logged in",
+            message: "You are not logged in",
         });
     }
 }
@@ -39,7 +39,7 @@ function workerMiddleware(req, res, next) {
     }
     catch (e) {
         return res.status(403).json({
-            message: "YOu are not logged in",
+            message: "You are not logged in",
         });
     }
 }

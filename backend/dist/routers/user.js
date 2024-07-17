@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a, _b, _c;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 const tweetnacl_1 = __importDefault(require("tweetnacl"));
 const client_1 = require("@prisma/client");
@@ -23,13 +23,13 @@ const middleware_1 = require("../middleware");
 const s3_presigned_post_1 = require("@aws-sdk/s3-presigned-post");
 const types_1 = require("../types");
 const web3_js_1 = require("@solana/web3.js");
-const connection = new web3_js_1.Connection((_a = process.env.RPC_URL) !== null && _a !== void 0 ? _a : "");
+const connection = new web3_js_1.Connection(process.env.RPC_URL);
 const PARENT_WALLET_ADDRESS = process.env.PARENT_WALLET_ADDRESS;
-const DEFAULT_TITLE = "Select the most clickable thumbnail";
+const DEFAULT_TITLE = "Select the most clickable thumbnail.";
 const s3Client = new client_s3_1.S3Client({
     credentials: {
-        accessKeyId: (_b = process.env.AWS_ACCESS_KEY_ID) !== null && _b !== void 0 ? _b : "",
-        secretAccessKey: (_c = process.env.AWS_SECRET_ACCESS_KEY) !== null && _c !== void 0 ? _c : "",
+        accessKeyId: (_a = process.env.AWS_ACCESS_KEY_ID) !== null && _a !== void 0 ? _a : "",
+        secretAccessKey: (_b = process.env.AWS_SECRET_ACCESS_KEY) !== null && _b !== void 0 ? _b : "",
     },
     region: "ap-south-1",
 });
@@ -57,7 +57,7 @@ router.get("/task", middleware_1.authMiddleware, (req, res) => __awaiter(void 0,
     });
     if (!taskDetails) {
         return res.status(411).json({
-            message: "You dont have access to this task",
+            message: "You dont have access to this task, Please Select Wallet Account.",
         });
     }
     // Todo: Can u make this faster?
@@ -70,8 +70,6 @@ router.get("/task", middleware_1.authMiddleware, (req, res) => __awaiter(void 0,
         },
     });
     const result = {};
-    // console.log("result: ",result)
-    // console.log("taskDetails: ",taskDetails)
     taskDetails.options.forEach((option) => {
         result[option.id] = {
             count: 0,
@@ -89,7 +87,7 @@ router.get("/task", middleware_1.authMiddleware, (req, res) => __awaiter(void 0,
     });
 }));
 router.post("/task", middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d, _e, _f, _g, _h, _j;
+    var _c, _d, _e, _f, _g, _h;
     //@ts-ignore
     const userId = req.userId;
     // validate the inputs from the user;
@@ -100,50 +98,40 @@ router.post("/task", middleware_1.authMiddleware, (req, res) => __awaiter(void 0
             id: userId,
         },
     });
-    // console.log("here -2")
     if (!parseData.success) {
         return res.status(411).json({
-            message: "You've sent the wrong inputs",
+            message: "You've sent the wrong inputs, Please try again.",
         });
     }
-    // console.log("here -1")
     const transaction = yield connection.getTransaction(parseData.data.signature, {
         maxSupportedTransactionVersion: 1,
     });
-    // console.log(transaction)
-    // console.log("here0")
-    if (((_e = (_d = transaction === null || transaction === void 0 ? void 0 : transaction.meta) === null || _d === void 0 ? void 0 : _d.postBalances[1]) !== null && _e !== void 0 ? _e : 0) -
-        ((_g = (_f = transaction === null || transaction === void 0 ? void 0 : transaction.meta) === null || _f === void 0 ? void 0 : _f.preBalances[1]) !== null && _g !== void 0 ? _g : 0) !==
+    if (((_d = (_c = transaction === null || transaction === void 0 ? void 0 : transaction.meta) === null || _c === void 0 ? void 0 : _c.postBalances[1]) !== null && _d !== void 0 ? _d : 0) -
+        ((_f = (_e = transaction === null || transaction === void 0 ? void 0 : transaction.meta) === null || _e === void 0 ? void 0 : _e.preBalances[1]) !== null && _f !== void 0 ? _f : 0) !==
         100000000) {
         return res.status(411).json({
-            message: "Transaction signature/amount incorrect",
+            message: "Transaction amount incorrect.",
         });
     }
-    // console.log("here1")
-    if (((_h = transaction === null || transaction === void 0 ? void 0 : transaction.transaction.message.getAccountKeys().get(1)) === null || _h === void 0 ? void 0 : _h.toString()) !==
+    if (((_g = transaction === null || transaction === void 0 ? void 0 : transaction.transaction.message.getAccountKeys().get(1)) === null || _g === void 0 ? void 0 : _g.toString()) !==
         PARENT_WALLET_ADDRESS) {
         return res.status(411).json({
-            message: "Transaction sent to wrong address",
+            message: "Transaction sent to WRONG address.",
         });
     }
-    // console.log("here2")
-    if (((_j = transaction === null || transaction === void 0 ? void 0 : transaction.transaction.message.getAccountKeys().get(0)) === null || _j === void 0 ? void 0 : _j.toString()) !==
+    if (((_h = transaction === null || transaction === void 0 ? void 0 : transaction.transaction.message.getAccountKeys().get(0)) === null || _h === void 0 ? void 0 : _h.toString()) !==
         (user === null || user === void 0 ? void 0 : user.address)) {
         return res.status(411).json({
-            message: "Transaction sent to wrong address",
+            message: "Transaction come from WRONG address.",
         });
     }
-    console.log("here3");
     // was this money paid by this user address or a different address?
-    // parse the signature here to ensure the person has paid 0.1 SOL
-    // const transaction = Transaction.from(parseData.data.signature);
     let response = yield prismaClient.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        var _k;
+        var _j;
         const response = yield tx.task.create({
             data: {
-                title: (_k = parseData.data.title) !== null && _k !== void 0 ? _k : DEFAULT_TITLE,
+                title: (_j = parseData.data.title) !== null && _j !== void 0 ? _j : DEFAULT_TITLE,
                 amount: 0.1 * config_1.TOTAL_DECIMALS,
-                //TODO: Signature should be unique in the table else people can reuse a signature
                 signature: parseData.data.signature,
                 user_id: userId,
             },
@@ -183,7 +171,7 @@ router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function*
     const result = tweetnacl_1.default.sign.detached.verify(message, new Uint8Array(signature.data), new web3_js_1.PublicKey(publicKey).toBytes());
     if (!result) {
         return res.status(411).json({
-            message: "Incorrect signature",
+            message: "Incorrect Signature, Please verify again.",
         });
     }
     const existingUser = yield prismaClient.user.findFirst({
