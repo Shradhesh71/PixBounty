@@ -14,7 +14,6 @@ import {
     Transaction,
 } from "@solana/web3.js"
 import nacl from "tweetnacl"
-import { privateKey } from "../privateKey"
 import { decode } from "bs58"
 const connection = new Connection(process.env.RPC_URL!)
 const router = Router()
@@ -52,7 +51,7 @@ router.post("/payout", workerMiddleware, async (req, res) => {
         }),
     )
 
-    const keypair = Keypair.fromSecretKey(decode(privateKey))
+    const keypair = Keypair.fromSecretKey(decode(process.env.PRIVATE_KEY!))
 
     let signature = ""
     try {

@@ -1,5 +1,6 @@
 "use client";
 import { Appbar } from "@/components/Appbar";
+import { Footer } from "@/components/footer";
 import { BACKEND_URL } from "@/utils";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ async function getTaskDetails(taskId: string) {
       },
     }
   );
+  console.log(response.data);
   return response.data;
 }
 
@@ -65,9 +67,12 @@ export default function Page({
 
 function Task({ imageUrl, votes }: { imageUrl: string; votes: number }) {
   return (
-    <div>
+    <div><div>
       <img className={"p-2 w-96 rounded-md"} src={imageUrl} />
       <div className="flex justify-center">{votes}</div>
+      
+    </div>
+    
     </div>
   );
 }

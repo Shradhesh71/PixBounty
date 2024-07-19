@@ -1,4 +1,5 @@
 import { Appbar } from "@/components/Appbar";
+import { Footer } from "@/components/footer";
 import { NextTask } from "@/components/NextTask";
  
 
@@ -7,6 +8,7 @@ export default function Home() {
     <div>
       <Appbar/>
       <NextTask/> 
+      <Footer/>
     </div>
   );
 }

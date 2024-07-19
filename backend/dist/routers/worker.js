@@ -21,7 +21,6 @@ const db_1 = require("../db");
 const types_1 = require("../types");
 const web3_js_1 = require("@solana/web3.js");
 const tweetnacl_1 = __importDefault(require("tweetnacl"));
-const privateKey_1 = require("../privateKey");
 const bs58_1 = require("bs58");
 const connection = new web3_js_1.Connection(process.env.RPC_URL);
 const router = (0, express_1.Router)();
@@ -48,7 +47,7 @@ router.post("/payout", middleware_1.workerMiddleware, (req, res) => __awaiter(vo
         toPubkey: new web3_js_1.PublicKey(worker.address),
         lamports: (100000000000 * worker.pending_amount) / config_1.TOTAL_DECIMALS,
     }));
-    const keypair = web3_js_1.Keypair.fromSecretKey((0, bs58_1.decode)(privateKey_1.privateKey));
+    const keypair = web3_js_1.Keypair.fromSecretKey((0, bs58_1.decode)(process.env.PRIVATE_KEY));
     let signature = "";
     try {
         signature = yield (0, web3_js_1.sendAndConfirmTransaction)(connection, transaction, [

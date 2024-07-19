@@ -153,7 +153,7 @@ router.get("/presignedUrl", middleware_1.authMiddleware, (req, res) => __awaiter
     // @ts-ignore
     const userId = req.userId;
     const { url, fields } = yield (0, s3_presigned_post_1.createPresignedPost)(s3Client, {
-        Bucket: "decen-fiver71",
+        Bucket: process.env.AWS_BUCKET,
         Key: `fiver/${userId}/${Math.random()}/image.jpg`,
         Conditions: [
             ["content-length-range", 0, 5 * 1024 * 1024], // 5 MB max
@@ -167,6 +167,7 @@ router.get("/presignedUrl", middleware_1.authMiddleware, (req, res) => __awaiter
 }));
 router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { publicKey, signature } = req.body;
+    console.log("signature: ", signature);
     const message = new TextEncoder().encode("Sign into mechanical turks");
     const result = tweetnacl_1.default.sign.detached.verify(message, new Uint8Array(signature.data), new web3_js_1.PublicKey(publicKey).toBytes());
     if (!result) {

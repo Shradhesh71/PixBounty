@@ -1,10 +1,8 @@
 "use client";
 import { Appbar } from "@/components/Appbar";
+import { Footer } from "@/components/footer";
 import { Hero } from "@/components/Hero";
 import { Upload } from "@/components/Upload";
-import { UploadImage } from "@/components/UploadImage";
-import Image from "next/image";
-import { useState } from "react";
 
 export default function Home() {
 
@@ -13,6 +11,7 @@ export default function Home() {
       <Appbar />
       <Hero />
       <Upload />
+      {/* <Footer/> */}
     </main>
   );
 }

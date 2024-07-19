@@ -64,11 +64,11 @@ export const Upload = () => {
   return (
     <div className="flex justify-center">
       <div className="max-w-screen-lg w-full">
-        <div className="text-2xl text-left pt-20 w-full pl-4">
-          Create a task
+        <div className="text-2xl text-left pt-20 w-full pl-4 text-green-700">
+          Create a Task
         </div>
 
-        <label className="pl-4 block mt-2 text-md font-medium text-gray-900 text-black">
+        <label className="pl-4 block mt-2 text-md font-medium text-green-700">
           Task details
         </label>
 
@@ -79,12 +79,12 @@ export const Upload = () => {
           type="text"
           id="first_name"
           className="ml-4 mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          placeholder="What is your task?"
+          placeholder="What is your task title?"
           required
         />
 
-        <label className="pl-4 block mt-8 text-md font-medium text-gray-900 text-black">
-          Add Images
+        <label className="pl-4 block mt-8 text-md font-medium text-green-700">
+          Add Images below(min:2)
         </label>
         <div className="flex justify-center pt-4 max-w-screen-lg">
           {images.map((image) => (

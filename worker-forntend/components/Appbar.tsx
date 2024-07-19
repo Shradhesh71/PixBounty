@@ -30,7 +30,7 @@ export const Appbar = () => {
 
     localStorage.setItem("token", response.data.token);
 
-    setBalance(response.data.amount / 1000_000_00)
+    setBalance(response.data.amount / 1000_000_00);
   }
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const Appbar = () => {
 
   return (
     <div className="flex justify-between border-b pb-2 pt-2">
-      <div className="text-2xl pl-4 flex justify-center pt-3">Turkify</div>
+      <div className="text-2xl pl-4 flex justify-center pt-3">PixBounty</div>
       <div className="text-xl pr-4 flex">
         <button
           onClick={() => {
