@@ -3,7 +3,7 @@ export const Footer = () => {
     <footer className=" relative bottom-0 left-0 z-15 w-full p-4 bg-black border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6">
       <span className="text-sm text-gray-500 sm:text-cente">
         © 2024{" "}
-        <a href="https://tsoc.dev" className="hover:underline">
+        <a href="https://Shradhesh.dev" className="hover:underline">
           Shradesh's codes™
         </a>
         . &nbsp; All Rights Reserved.

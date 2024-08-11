@@ -1,6 +1,5 @@
 "use client";
 import { Appbar } from "@/components/Appbar";
-import { Footer } from "@/components/footer";
 import { BACKEND_URL } from "@/utils";
 import axios from "axios";
 import { useEffect, useState } from "react";
